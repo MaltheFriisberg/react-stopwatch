@@ -1,23 +1,20 @@
 import { Button } from "@chakra-ui/button";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useState } from "react";
 const Counter = (props:any) => {
     let [secondsCount, setSecondsCount] = useState(0);
     let [isRunning, setIsRunning] = useState(false);
-    let interval=null;
     const incrementSeconds = () => {setSecondsCount(secondsCount+=1)}
-    //const secondsInterval = setInterval(incrementSeconds, 1000);
-    const runSecondsCounter =()=>{setInterval(incrementSeconds, 1000);} 
-    //const cancelFunc = () => {clearInterval(secondsInterval);}
+    const runSecondsCounter =()=>{countRef.current = window.setInterval(incrementSeconds, 1000)} 
+    const pauseTimer=()=>{window.clearInterval(countRef.current)}
     const buttonText = isRunning ? 'Stop' : 'Start'
-
+    const countRef = useRef(0)
     useEffect(()=>{
-        console.log(isRunning)
         if(isRunning) {
-            runSecondsCounter();
+            runSecondsCounter()
         }else {
-
-        }
+            pauseTimer()
+        }   
     },[isRunning])
     return (
         <div>
